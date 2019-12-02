@@ -1,0 +1,67 @@
+on:
+  push:
+    branches:
+      - master
+
+name: Flutter App Template Release
+
+jobs:
+  main:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v1
+
+      - name: Install xcb shapes and xfixes
+        run: sudo apt-get install libxcb-shape0-dev libxcb-xfixes0-dev
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - name: Install flutter
+        uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+
+      - name: Install appimagetool
+        run: |
+          wget https://github.com/AppImage/AppImageKit/releases/latest/download/appimagetool-x86_64.AppImage
+          chmod +x appimagetool-x86_64.AppImage
+          sudo mv appimagetool-x86_64.AppImage /usr/bin/appimagetool
+
+      - name: Install cargo-flutter
+        uses: actions-rs/cargo@v1
+        with:
+          command: install
+          args: cargo-flutter
+
+      - name: Run cargo-flutter
+        uses: actions-rs/cargo@v1
+        with:
+          command: flutter
+          args: --format appimage --no-sign build --release
+
+      - name: Create release
+        uses: actions/create-release@v1
+        id: create-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v_${{ github.sha }}
+          release_name: Release v_${{ github.sha }}
+          body: Flutter App Template
+          
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: './target/flutter/release/flutter-app-template-x86_64.AppImage'
+          asset_name: 'flutter-app-template-x86_64.AppImage'
+          asset_content_type: application/octet-stream

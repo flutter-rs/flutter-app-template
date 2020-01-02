@@ -1,0 +1,63 @@
+on:
+  push:
+    branches:
+      - master
+
+name: Flutter App Template Release
+
+jobs:
+  main:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v1
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - name: Install flutter
+        uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+
+      - name: Install appimagetool
+        run: |
+          wget -O appimagetool https://github.com/AppImage/AppImageKit/releases/latest/download/appimagetool-x86_64.AppImage
+          chmod +x appimagetool
+
+      - name: Install cargo-flutter
+        uses: actions-rs/cargo@v1
+        with:
+          command: install
+          args: cargo-flutter
+        env:
+          CARGO_INSTALL_ROOT: /usr/share/rust/.cargo
+
+      - name: Run cargo-flutter
+        uses: actions-rs/cargo@v1
+        with:
+          command: flutter
+          args: --format appimage --no-sign build --release
+        env:
+          PATH: '.:/usr/share/rust/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+
+      - name: Create release
+        uses: actions/create-release@v1
+        id: create-rerlease
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: './target/flutter/release/flutter-app-template-x86_64.AppImage'
+          asset_name: 'flutter-app-template-x86_64.AppImage'
+          asset_content_type: application/octet-stream

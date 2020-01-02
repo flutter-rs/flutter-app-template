@@ -22,7 +22,9 @@ fn main() {
     let flutter = FlutterWindow::new(window).unwrap();
     let flutter = flutter.with_resource_context().unwrap();
 
-    flutter.start_engine(&PathBuf::from(asset_dir), &[], snapshot).unwrap();
+    flutter
+        .start_engine(&PathBuf::from(asset_dir), &[], snapshot)
+        .unwrap();
 
     flutter.run();
 }

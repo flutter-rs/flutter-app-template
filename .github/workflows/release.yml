@@ -35,8 +35,6 @@ jobs:
         with:
           command: install
           args: cargo-flutter
-        env:
-          CARGO_INSTALL_ROOT: /usr/share/rust/.cargo
 
       - name: Run cargo-flutter
         uses: actions-rs/cargo@v1

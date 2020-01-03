@@ -6,7 +6,7 @@ edition = "2018"
 
 [dependencies]
 env_logger = "0.7.1"
-flutter-engine = { git = "https://github.com/flutter-rs/flutter-rs", features = ["loader"] }
+flutter-engine = { git = "https://github.com/flutter-rs/flutter-rs" }
 flutter-winit = { git = "https://github.com/flutter-rs/flutter-rs" }
 glutin = { git = "https://github.com/dvc94ch/glutin", branch = "android" }
 log = "0.4.8"

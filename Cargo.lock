@@ -41,7 +41,7 @@ source = "git+https://github.com/rust-windowing/android-ndk-rs#edde567f3d071db13
 [[package]]
 name = "android_glue"
 version = "0.2.3"
-source = "git+https://github.com/rust-windowing/android-rs-glue#69d1d541f4c25fe43445f58052bda9610645fe15"
+source = "git+https://github.com/rust-windowing/android-rs-glue#096c6dd62dfa3e6c233f9ed3aafedfb9dab57871"
 dependencies = [
  "android-ndk-sys",
 ]
@@ -109,9 +109,9 @@ dependencies = [
 
 [[package]]
 name = "async-task"
-version = "1.1.0"
+version = "1.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "abdb6048336bef96e8c8fc5573536c5cc5b391fbfd0980349959b7c3f7a40d19"
+checksum = "d22dc86693d375d2733b536fd8914bea0fa93adf4b1e6bcbd9c7c500cb62d920"
 dependencies = [
  "crossbeam-utils 0.7.0",
 ]
@@ -179,7 +179,7 @@ dependencies = [
  "lazycell",
  "log",
  "peeking_take_while",
- "proc-macro2 1.0.6",
+ "proc-macro2 1.0.7",
  "quote 1.0.2",
  "regex",
  "rustc-hash",
@@ -545,9 +545,9 @@ version = "0.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0bc225b78e0391e4b8683440bf2e63c2deeeb2ce5189eab46e2b68c6d3725d08"
 dependencies = [
- "proc-macro2 1.0.6",
+ "proc-macro2 1.0.7",
  "quote 1.0.2",
- "syn 1.0.11",
+ "syn 1.0.12",
  "synstructure",
 ]
 
@@ -565,24 +565,22 @@ dependencies = [
 [[package]]
 name = "flutter-engine"
 version = "0.3.5"
-source = "git+https://github.com/flutter-rs/flutter-rs#07bc446aff5454c4a90b9435d5e056b67c5d89d7"
+source = "git+https://github.com/flutter-rs/flutter-rs#307bf7824bcdbc694de08d0b53db344e19cea1a5"
 dependencies = [
  "cty",
  "flutter-engine-sys",
  "gl",
- "libloading",
  "log",
  "parking_lot 0.10.0",
  "priority-queue",
  "serde",
  "serde_json",
- "xmas-elf",
 ]
 
 [[package]]
 name = "flutter-engine-sys"
 version = "0.3.5"
-source = "git+https://github.com/flutter-rs/flutter-rs#07bc446aff5454c4a90b9435d5e056b67c5d89d7"
+source = "git+https://github.com/flutter-rs/flutter-rs#307bf7824bcdbc694de08d0b53db344e19cea1a5"
 dependencies = [
  "bindgen",
  "dirs",
@@ -591,7 +589,7 @@ dependencies = [
 [[package]]
 name = "flutter-plugins"
 version = "0.3.5"
-source = "git+https://github.com/flutter-rs/flutter-rs#07bc446aff5454c4a90b9435d5e056b67c5d89d7"
+source = "git+https://github.com/flutter-rs/flutter-rs#307bf7824bcdbc694de08d0b53db344e19cea1a5"
 dependencies = [
  "flutter-engine",
  "locale_config",
@@ -606,7 +604,7 @@ dependencies = [
 [[package]]
 name = "flutter-winit"
 version = "0.1.0"
-source = "git+https://github.com/flutter-rs/flutter-rs#07bc446aff5454c4a90b9435d5e056b67c5d89d7"
+source = "git+https://github.com/flutter-rs/flutter-rs#307bf7824bcdbc694de08d0b53db344e19cea1a5"
 dependencies = [
  "async-std",
  "copypasta",
@@ -1253,18 +1251,18 @@ dependencies = [
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.6"
+version = "1.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9c9e470a8dc4aeae2dee2f335e8f533e2d4b347e1434e5671afc49b054592f27"
+checksum = "0319972dcae462681daf4da1adeeaa066e3ebd29c69be96c6abb1259d2ee2bcc"
 dependencies = [
  "unicode-xid 0.2.0",
 ]
 
 [[package]]
 name = "quick-error"
-version = "1.2.2"
+version = "1.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9274b940887ce9addde99c4eee6b5c44cc494b182b97e73dc8ffdcb3397fd3f0"
+checksum = "a1d01941d82fa2ab50be1e79e6714289dd7cde78eba4c074bc5a4374f650dfe0"
 
 [[package]]
 name = "quote"
@@ -1281,7 +1279,7 @@ version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "053a8c8bcc71fcce321828dc897a98ab9760bef03a4fc36693c231e5b3216cfe"
 dependencies = [
- "proc-macro2 1.0.6",
+ "proc-macro2 1.0.7",
 ]
 
 [[package]]
@@ -1474,9 +1472,9 @@ version = "1.0.104"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "128f9e303a5a29922045a830221b8f78ec74a5f544944f3d5984f8ec3895ef64"
 dependencies = [
- "proc-macro2 1.0.6",
+ "proc-macro2 1.0.7",
  "quote 1.0.2",
- "syn 1.0.11",
+ "syn 1.0.12",
 ]
 
 [[package]]
@@ -1581,11 +1579,11 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "1.0.11"
+version = "1.0.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dff0acdb207ae2fe6d5976617f887eb1e35a2ba52c13c7234c790960cdad9238"
+checksum = "ddc157159e2a7df58cd67b1cace10b8ed256a404fb0070593f137d8ba6bef4de"
 dependencies = [
- "proc-macro2 1.0.6",
+ "proc-macro2 1.0.7",
  "quote 1.0.2",
  "unicode-xid 0.2.0",
 ]
@@ -1596,9 +1594,9 @@ version = "0.12.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "67656ea1dc1b41b1451851562ea232ec2e5a80242139f7e679ceccfb5d61f545"
 dependencies = [
- "proc-macro2 1.0.6",
+ "proc-macro2 1.0.7",
  "quote 1.0.2",
- "syn 1.0.11",
+ "syn 1.0.12",
  "unicode-xid 0.2.0",
 ]
 
@@ -1845,7 +1843,7 @@ dependencies = [
 [[package]]
 name = "winit"
 version = "0.20.0-alpha5"
-source = "git+https://github.com/dvc94ch/winit?branch=android#2a397301336acad8d19a77ce574e2b7c87dafba6"
+source = "git+https://github.com/dvc94ch/winit?branch=android#1603d8b5bbf632419cec52d904eeb00ce124ba5b"
 dependencies = [
  "android-ndk",
  "android-ndk-sys",
@@ -1919,22 +1917,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d089681aa106a86fade1b0128fb5daf07d5867a509ab036d99988dec80429a57"
 
 [[package]]
-name = "xmas-elf"
-version = "0.7.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e74de9a366f6ab8c405fa6b371d9ac24943921fa14b3d64afcb202065c405f11"
-dependencies = [
- "zero",
-]
-
-[[package]]
 name = "xml-rs"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "541b12c998c5b56aa2b4e6f18f03664eef9a4fd0a246a55594efae6cc2d964b5"
-
-[[package]]
-name = "zero"
-version = "0.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5f1bc8a6b2005884962297587045002d8cfb8dcec9db332f4ca216ddc5de82c5"

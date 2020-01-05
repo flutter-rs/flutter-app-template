@@ -10,3 +10,13 @@ flutter-engine = { git = "https://github.com/flutter-rs/flutter-rs" }
 flutter-winit = { git = "https://github.com/flutter-rs/flutter-rs" }
 glutin = { git = "https://github.com/dvc94ch/glutin", branch = "android" }
 log = "0.4.8"
+
+[target.'cfg(target_os = "android")'.dependencies]
+android_glue = { git = "https://github.com/rust-windowing/android-rs-glue" }
+android_logger = "0.8.6"
+android-ndk = { git = "https://github.com/rust-windowing/android-ndk-rs" }
+jni-glue = "0.0.9"
+
+[target.'cfg(target_os = "android")'.dependencies.jni-android-sys]
+version = "0.0.9"
+features = ["api-level-18", "android-content-Context", "android-content-pm-ApplicationInfo"]

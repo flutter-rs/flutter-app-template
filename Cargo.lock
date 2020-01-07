@@ -815,8 +815,6 @@ checksum = "501266b7edd0174f8530248f87f99c88fbe60ca4ef3dd486835b8d8d53136f7f"
 [[package]]
 name = "jni-android-sys"
 version = "0.0.9"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "05ca7fd9f463c6b0b7774eff13bbdd7d87b038c2de5a077b050a371301b5ac6d"
 dependencies = [
  "cfg-if",
  "jni-glue",
@@ -825,8 +823,6 @@ dependencies = [
 [[package]]
 name = "jni-glue"
 version = "0.0.9"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e9fb3b0ce4a4c594e2f78f32040e0f2cd85ec2c7738361b027b236dbfb6c6298"
 dependencies = [
  "jni-sys",
  "lazy_static",

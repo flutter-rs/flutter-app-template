@@ -15,8 +15,8 @@ log = "0.4.8"
 android_glue = { git = "https://github.com/rust-windowing/android-rs-glue" }
 android_logger = "0.8.6"
 android-ndk = { git = "https://github.com/rust-windowing/android-ndk-rs" }
-jni-glue = "0.0.9"
+jni-glue = { path = "../jni-bindgen/jni-glue" }
 
 [target.'cfg(target_os = "android")'.dependencies.jni-android-sys]
-version = "0.0.9"
-features = ["api-level-18", "android-content-Context", "android-content-pm-ApplicationInfo"]
+path = "../jni-bindgen/jni-android-sys"
+features = ["api-level-28", "android-content-Context", "android-content-pm-ApplicationInfo"]

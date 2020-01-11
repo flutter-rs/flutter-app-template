@@ -1,40 +1,50 @@
-on:
-  push:
-    branches:
-    - master
+on: [push, pull_request]
 
-name: Flutter App Template Release
+name: Flutter App Template
 
 jobs:
-  publish:
+  ci:
     strategy:
       fail-fast: false
       matrix:
         toolchain:
         - rust: stable
           flutter: stable
+        - rust: nightly
+          flutter: dev
         platform:
         - target: x86_64-unknown-linux-gnu
           host: ubuntu-latest
-          format: appimage
-          artifact: flutter-app-template-x86_64.AppImage
+          cross: false
 
         - target: x86_64-apple-darwin
           host: macos-latest
-          format: dmg
+          cross: false
 
         - target: x86_64-pc-windows-msvc
           host: windows-latest
-          format: nsis
+          cross: false
 
+        - target: armv7-linux-androideabi
+          host: ubuntu-latest
+          cross: true
         - target: aarch64-linux-android
           host: ubuntu-latest
-          format: apk
-          artifact: apk/flutter-app-template.apk
+          cross: true
+          # TODO linking fails, not been able to reproduce locally yet
+        #- target: i686-linux-android
+        #  host: ubuntu-latest
+        #  cross: true
+        #- target: x86_64-linux-android
+        #  host: ubuntu-latest
+        #  cross: true
 
+        - target: armv7-apple-ios
+          host: macos-latest
+          cross: true
         - target: aarch64-apple-ios
           host: macos-latest
-          format: lipo
+          cross: true
     env:
       RUST_BACKTRACE: 1
       CARGO_INCREMENTAL: 0
@@ -64,13 +74,6 @@ jobs:
       if: matrix.platform.host == 'windows-latest'
       run: choco install llvm
 
-    - name: Install appimagetool
-      if: matrix.platform.format == 'appimage'
-      run: |
-        wget https://github.com/AppImage/AppImageKit/releases/latest/download/appimagetool-x86_64.AppImage
-        chmod +x appimagetool-x86_64.AppImage
-        sudo mv appimagetool-x86_64.AppImage /usr/bin/appimagetool
-
     - name: Install rust toolchain
       uses: hecrj/setup-rust-action@v1
       with:
@@ -86,23 +89,26 @@ jobs:
       run: cargo install cargo-flutter --force
 
     - name: Build
-      run: cargo flutter --quiet --no-sign --format ${{ matrix.platform.format }}
-        build --target ${{ matrix.platform.target }} --release
+      run: cargo flutter --quiet build --target ${{ matrix.platform.target }}
 
-    - name: Create release
-      continue-on-error: true
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: v_${{ github.sha }}
-        release_name: Release v_${{ github.sha }}
+    - name: Test
+      if: matrix.platform.cross == false
+      run: cargo flutter --quiet test
 
-    - name: Upload release asset
-      uses: softprops/action-gh-release@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v1
+
+    - name: Install rust toolchain
+      uses: hecrj/setup-rust-action@v1
       with:
-        tag_name: v_${{ github.sha }}
-        name: Flutter App Template ${{ github.sha }}
-        files: ./target/flutter/${{ matrix.platform.target }}/release/${{ matrix.platform.artifact }}
+        rust-version: stable
+        components: clippy, rustfmt
+
+    - name: cargo fmt
+      run: cargo fmt --all -- --check
+
+    - name: cargo clippy
+      run: cargo clippy -- -D warnings

@@ -5,12 +5,11 @@ use std::path::Path;
 fn main() {
     env_logger::init();
 
-    let assets_dir = std::env::var("FLUTTER_ASSET_DIR")
-        .expect("FLUTTER_ASSET_DIR");
+    let assets_dir = std::env::var("FLUTTER_ASSET_DIR").expect("FLUTTER_ASSET_DIR");
 
     let mut args = Vec::with_capacity(1);
 
-    if let Some(snapshot) = std::env::var("FLUTTER_AOT_SNAPSHOT").ok() {
+    if let Ok(snapshot) = std::env::var("FLUTTER_AOT_SNAPSHOT") {
         if Path::new(&snapshot).exists() {
             args.push(format!("--aot-shared-library-name={}", snapshot));
         }

@@ -3,9 +3,8 @@
 [![Join Gitter Chat Channel][gitter-badge]][gitter-url]
 
 Example app built using flutter-rs.
- <img src="https://raw.githubusercontent.com/gliheng/flutter-rs/master/www/images/logo.png" width="50" height="50" align="center" />
 
-![screenshot](https://raw.githubusercontent.com/gliheng/flutter-rs/master/www/images/screenshot_mac.png)
+![flutter-app-template][flutter-app-template]
 
 # Get Started
 
@@ -51,3 +50,4 @@ SOFTWARE.
 
 [gitter-badge]: https://badges.gitter.im/flutter-rs/community.svg
 [gitter-url]: https://gitter.im/flutter-rs/community
+[flutter-app-template]: https://user-images.githubusercontent.com/741807/72478608-a8b0e500-37f2-11ea-84ee-d7bd38a6370e.png

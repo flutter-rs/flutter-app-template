@@ -113,5 +113,10 @@ jobs:
     - name: cargo clippy
       run: cargo clippy -- -D warnings
 
+    - name: Install flutter
+      uses: subosito/flutter-action@v1
+      with:
+        channel: stable
+
     - name: flutter format
       run: flutter format --set-exit-if-changed .

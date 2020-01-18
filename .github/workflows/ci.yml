@@ -95,6 +95,10 @@ jobs:
       if: matrix.platform.cross == false
       run: cargo flutter --quiet test
 
+    - name: Flutter test
+      if: matrix.platform.cross == false
+      run: flutter test
+
   lint:
     runs-on: ubuntu-latest
     steps:

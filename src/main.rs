@@ -8,7 +8,12 @@ fn main() {
 
     let assets_dir = std::env::var("FLUTTER_ASSET_DIR").expect("FLUTTER_ASSET_DIR");
 
-    let mut args = Vec::with_capacity(1);
+    let mut args = Vec::with_capacity(3);
+
+    if let Ok(observatory_port) = std::env::var("DART_OBSERVATORY_PORT") {
+        args.push("--disable-service-auth-codes".to_string());
+        args.push(format!("--observatory-port={}", observatory_port));
+    }
 
     if let Ok(snapshot) = std::env::var("FLUTTER_AOT_SNAPSHOT") {
         if Path::new(&snapshot).exists() {

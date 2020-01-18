@@ -101,6 +101,12 @@ jobs:
     - name: Checkout sources
       uses: actions/checkout@v1
 
+    - name: Cache cargo folder
+      uses: actions/cache@v1
+      with:
+        path: ~/.cargo
+        key: lint-cargo
+
     - name: Install rust toolchain
       uses: hecrj/setup-rust-action@v1
       with:

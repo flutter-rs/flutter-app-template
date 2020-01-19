@@ -99,6 +99,10 @@ jobs:
       if: matrix.platform.cross == false
       run: flutter test
 
+    - name: Flutter driver tests
+      if: matrix.platform.cross == false
+      run: cargo flutter --dart-main test_driver/app.dart --drive run
+
   lint:
     runs-on: ubuntu-latest
     steps:

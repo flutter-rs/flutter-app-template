@@ -21,9 +21,9 @@ jobs:
           host: macos-latest
           cross: false
 
-        - target: x86_64-pc-windows-msvc
-          host: windows-latest
-          cross: false
+        #- target: x86_64-pc-windows-msvc
+        #  host: windows-latest
+        #  cross: false
 
         - target: armv7-linux-androideabi
           host: ubuntu-latest
@@ -31,7 +31,7 @@ jobs:
         - target: aarch64-linux-android
           host: ubuntu-latest
           cross: true
-          # TODO linking fails, not been able to reproduce locally yet
+
         #- target: i686-linux-android
         #  host: ubuntu-latest
         #  cross: true
@@ -91,19 +91,19 @@ jobs:
     - name: Build
       run: cargo flutter --quiet build --target ${{ matrix.platform.target }}
 
-    - name: Test
+    - name: Rust tests
       if: matrix.platform.cross == false
       run: cargo flutter --quiet test
 
-    - name: Flutter test
+    - name: Flutter tests
       if: matrix.platform.cross == false
       run: flutter test
 
-    - name: Flutter driver tests
-      if: matrix.platform.cross == false
-      run: cargo flutter --dart-main test_driver/app.dart --drive run
+    #- name: Flutter driver tests
+    #  if: matrix.platform.cross == false
+    #  run: cargo flutter --dart-main test_driver/app.dart --drive run
 
-  lint:
+  lint-rust:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout sources
@@ -127,10 +127,22 @@ jobs:
     - name: cargo clippy
       run: cargo clippy -- -D warnings
 
+  lint-flutter:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout sources
+      uses: actions/checkout@v1
+
     - name: Install flutter
       uses: subosito/flutter-action@v1
       with:
         channel: stable
 
+    - name: flutter pub get
+      run: flutter pub get
+
     - name: flutter format
       run: flutter format --set-exit-if-changed .
+
+    - name: flutter analyze
+      run: flutter analyze

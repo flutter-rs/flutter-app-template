@@ -23,9 +23,9 @@ jobs:
           host: macos-latest
           format: dmg
 
-        - target: x86_64-pc-windows-msvc
-          host: windows-latest
-          format: nsis
+        #- target: x86_64-pc-windows-msvc
+        #  host: windows-latest
+        #  format: nsis
 
         - target: aarch64-linux-android
           host: ubuntu-latest

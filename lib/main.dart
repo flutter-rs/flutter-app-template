@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart'
-    show debugDefaultTargetPlatformOverride;
 
 void main() {
-  // Override is necessary to prevent Unknown platform' flutter startup error.
-  debugDefaultTargetPlatformOverride = TargetPlatform.android;
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,18 +14,18 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  const MyHomePage({super.key, required this.title});
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -49,22 +47,22 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
+            const Text(
               'You have pushed the button this many times:',
             ),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.display1,
-              key: Key('counter'),
+              style: Theme.of(context).textTheme.headlineMedium,
+              key: const Key('counter'),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        key: Key('increment'),
+        key: const Key('increment'),
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

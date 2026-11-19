@@ -13,3 +13,9 @@ flutter-glfw = { path = "../flutter-rs/flutter-glfw" }
 log = "0.4"
 # The verification harness decodes a typed-list reply into a struct.
 serde = { version = "1", features = ["derive"] }
+
+# glfw-rs 0.63 leaks windows created with `create_shared`; flutter-glfw needs
+# shared contexts for its master/resource/view contexts. The vendor copy is the
+# same crate with the destruction guard removed.
+[patch.crates-io]
+glfw = { path = "../flutter-rs/vendor/glfw" }

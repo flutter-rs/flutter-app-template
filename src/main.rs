@@ -18,7 +18,7 @@ use flutter_engine::{
     },
     codec::{STANDARD_CODEC, Value},
 };
-use flutter_glfw::window::{WindowArgs, WindowMode};
+use flutter_glfw::{AppArgs, WindowArgs, WindowMode};
 use log::{error, info};
 use serde::{Deserialize, de::DeserializeOwned};
 use std::{
@@ -68,6 +68,13 @@ fn main() {
 
     let mut desktop = flutter_glfw::init().expect("failed to initialize glfw");
 
+    let mut app_args = AppArgs::new(assets_dir);
+    app_args.icu_data_path = Some(icu_data);
+    app_args.engine_args = args;
+    let app = desktop
+        .create_app(app_args)
+        .expect("failed to create the Flutter app");
+
     let window_args = WindowArgs {
         width: 1280,
         height: 720,
@@ -75,24 +82,24 @@ fn main() {
         mode: WindowMode::Windowed,
     };
 
-    let window = desktop
-        .create_window_with_icu(&window_args, assets_dir, icu_data, args)
+    let _main_window = app
+        .create_window(&window_args)
         .expect("failed to create window");
 
     // The two host -> Dart channels are registered first, so the trigger
     // channel's handler can be handed the handles it drives them through. The
     // engine owns all three; these are weak handles.
-    let host = window.register_channel(MethodChannel::new(
+    let host = app.register_channel(MethodChannel::new(
         HOST_CHANNEL,
         Unexpected(HOST_CHANNEL),
         &STANDARD_CODEC,
     ));
-    let messages = window.register_channel(MessageChannel::new(
+    let messages = app.register_channel(MessageChannel::new(
         MESSAGE_CHANNEL,
         Unexpected(MESSAGE_CHANNEL),
         &STANDARD_CODEC,
     ));
-    window.register_channel(MethodChannel::new(
+    app.register_channel(MethodChannel::new(
         TRIGGER_CHANNEL,
         Harness {
             host,
@@ -102,14 +109,14 @@ fn main() {
         &STANDARD_CODEC,
     ));
 
-    window.run(None, None).expect("engine run failed");
+    app.run(None, None).expect("engine run failed");
 
     // The window-close path, which is the one `shutdown()` exists for: the
     // event loop has returned, so the engine is still live and this thread is
-    // still its platform thread. Dropping the window would shut the engine
-    // down too, but only this form can log that it happened.
+    // still its platform thread. Dropping the app would shut the engine down
+    // too, but only this form can log that it happened.
     info!("the window closed; shutting the engine down");
-    window.shutdown();
+    app.shutdown();
     info!("the engine is shut down; leaving main");
 }
 

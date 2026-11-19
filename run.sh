@@ -5,10 +5,21 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 
+# GLFW's Wayland backend cannot report a window position, and flutter-glfw
+# reads it when a window is created, so a native Wayland session logs a GLFW
+# error. X11 (XWayland) has window positions; set FLUTTER_GLFW_PLATFORM
+# yourself on a Wayland-only host, where this fallback is skipped.
+if [[ -z "${FLUTTER_GLFW_PLATFORM:-}" && -n "${WAYLAND_DISPLAY:-}" && -n "${DISPLAY:-}" ]]; then
+  export FLUTTER_GLFW_PLATFORM=x11
+fi
+
 # 1. The official Flutter engine embedder library. It must match the engine
-#    version of your Flutter SDK (bin/internal/engine.version). Download once:
+#    version of your Flutter SDK: bin/internal/engine.version, or
+#    bin/cache/engine.stamp on SDK builds that no longer ship the former.
+#    Download once:
 #
-#    EV=$(cat "$(dirname "$(dirname "$(readlink -f "$(which flutter)")")")"/bin/internal/engine.version)
+#    ROOT="$(dirname "$(dirname "$(readlink -f "$(which flutter)")")")"
+#    EV=$(cat "$ROOT/bin/internal/engine.version" 2>/dev/null || cat "$ROOT/bin/cache/engine.stamp")
 #    mkdir -p .engine && cd .engine
 #    curl -fSL -o emb.zip \
 #      "https://storage.googleapis.com/flutter_infra_release/flutter/$EV/linux-x64/linux-x64-embedder.zip"

@@ -31,7 +31,10 @@ RUST_LOG=debug ./run.sh      # more host logging
 ```
 
 `run.sh` builds the Dart asset bundle, builds the Rust host and opens the GLFW
-window.
+window. On a Wayland session it selects GLFW's X11 backend through XWayland,
+because the Wayland backend cannot report window positions and the embedder
+reads them when it creates a window. Export `FLUTTER_GLFW_PLATFORM` yourself to
+override that choice.
 
 ## Test
 
@@ -84,18 +87,19 @@ it either way.)
 
 ## Shutdown
 
-`FlutterEngine::shutdown` is idempotent, every entry point after it is a logged
-no-op, and dropping the last engine handle without a shutdown warns. Reaching
-any of that needs the normal window-close path, which `SIGTERM` skips.
+`FlutterApp::shutdown` shuts the engine down; the engine's own `shutdown` is
+idempotent, every entry point after it is a logged no-op, and dropping the last
+engine handle without a shutdown warns. Reaching any of that needs the normal
+window-close path, which `SIGTERM` skips.
 
 - **Close the window** invokes `close` on `flutter-rs/window`, which is exactly
   what clicking the window's X does: GLFW's `should_close` flag is set, the event
   loop returns, and the host shuts the engine down explicitly. Closing the window
   by its X or with this button must behave identically.
 - **SystemNavigator.pop()** is the framework's own way out. It reaches the
-  embedder as `SystemNavigator.pop` on `flutter/platform`. Today the embedder
-  answers that call as not implemented and the window stays open — that is the
-  known gap this button exists to show, not a failure of the harness.
+  embedder as `SystemNavigator.pop` on `flutter/platform`; the multi-window
+  backend sets the app's quit flag, closes every window and returns `Exit`.
+  The window closes and the host logs the two shutdown lines below.
 
 However the window is closed, the host log must end with these two `INFO` lines
 from `flutter_app_template`, in this order and with nothing after them:
@@ -114,8 +118,8 @@ A clean run has **no `WARN` and no `ERROR` lines at all**. In particular:
   thread.
 - `FlutterEngine::shutdown called more than once` — something shut the engine
   down twice; the second call is a no-op, but nothing in this app should make it.
-- `FlutterWindow dropped off the platform thread` — the window outlived its
-  thread.
+- `FlutterApp dropped off the platform thread` — the app outlived the thread
+  that created it.
 - `a message response handle was dropped without sending a response!` — a
   response handle was lost instead of being answered, which leaks engine memory.
 - `never#N came back as ...` — the Dart handler for the never-reply case replied

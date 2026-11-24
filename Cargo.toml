@@ -2,21 +2,20 @@
 name = "flutter-app-template"
 version = "0.1.0"
 authors = ["David Craven <david@craven.ch>"]
-edition = "2018"
+edition = "2024"
+# Matches the embedder's MSRV (flutter-rs 0.5.0).
+rust-version = "1.88"
 
 [dependencies]
-env_logger = "0.7.1"
-flutter-engine = { git = "https://github.com/flutter-rs/flutter-rs" }
-flutter-winit = { git = "https://github.com/flutter-rs/flutter-rs" }
-glutin = { git = "https://github.com/dvc94ch/glutin", branch = "android" }
-log = "0.4.8"
+env_logger = "0.11"
+flutter-engine = { path = "../flutter-rs/flutter-engine" }
+flutter-glfw = { path = "../flutter-rs/flutter-glfw" }
+log = "0.4"
+# The verification harness decodes a typed-list reply into a struct.
+serde = { version = "1", features = ["derive"] }
 
-[target.'cfg(target_os = "android")'.dependencies]
-android_glue = { git = "https://github.com/rust-windowing/android-rs-glue" }
-android_logger = "0.8.6"
-android-ndk = { git = "https://github.com/rust-windowing/android-ndk-rs" }
-jni-glue = "0.0.10"
-
-[target.'cfg(target_os = "android")'.dependencies.jni-android-sys]
-version = "0.0.10"
-features = ["api-level-18", "android-content-Context", "android-content-pm-ApplicationInfo"]
+# glfw-rs 0.63 leaks windows created with `create_shared`; flutter-glfw needs
+# shared contexts for its master/resource/view contexts. The vendor copy is the
+# same crate with the destruction guard removed.
+[patch.crates-io]
+glfw = { path = "../flutter-rs/vendor/glfw" }
